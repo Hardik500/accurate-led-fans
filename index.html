@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Fan Color Corrector | Get Accurate RGB for Your PC</title>
+  <meta name="description" content="Fix LED fan color mismatches. Input your desired color and get the corrected RGB/Hex values for Lian Li fans and strimers.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">💡</span>
+        <h1>LED Color Corrector</h1>
+      </div>
+      <p class="tagline">Get accurate RGB values for your PC LED fans</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Input Section -->
+      <section class="input-section">
+        <div class="section-header">
+          <h2>1. Choose Your Desired Color</h2>
+          <p>Select the color you want to see on your LED fans</p>
+        </div>
+        
+        <div class="color-input-group">
+          <div class="color-picker-wrapper">
+            <input type="color" id="colorPicker" value="#FF6600">
+            <div class="color-picker-overlay" id="colorPickerOverlay"></div>
+          </div>
+          
+          <div class="hex-input-wrapper">
+            <label for="hexInput">HEX</label>
+            <input type="text" id="hexInput" value="#FF6600" maxlength="7" placeholder="#FF6600">
+          </div>
+          
+          <div class="rgb-inputs">
+            <div class="rgb-input-wrapper">
+              <label for="rInput">R</label>
+              <input type="number" id="rInput" min="0" max="255" value="255">
+            </div>
+            <div class="rgb-input-wrapper">
+              <label for="gInput">G</label>
+              <input type="number" id="gInput" min="0" max="255" value="102">
+            </div>
+            <div class="rgb-input-wrapper">
+              <label for="bInput">B</label>
+              <input type="number" id="bInput" min="0" max="255" value="0">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Device Section -->
+      <section class="device-section">
+        <div class="section-header">
+          <h2>2. Select Your Device</h2>
+          <p>Different devices need different corrections</p>
+        </div>
+        
+        <div class="device-buttons">
+          <button class="device-btn active" data-device="tl-fans">
+            <span class="device-icon">🌀</span>
+            <span class="device-name">Lian Li TL Fans</span>
+            <span class="device-desc">UNI FAN TL series</span>
+          </button>
+          <button class="device-btn" data-device="strimer">
+            <span class="device-icon">⚡</span>
+            <span class="device-name">Lian Li Strimer</span>
+            <span class="device-desc">Strimer Plus cables</span>
+          </button>
+          <button class="device-btn" data-device="sl-fans">
+            <span class="device-icon">💨</span>
+            <span class="device-name">Lian Li SL Fans</span>
+            <span class="device-desc">UNI FAN SL series</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="results-section">
+        <div class="section-header">
+          <h2>3. Use This Corrected Color</h2>
+          <p>Enter this value in L-Connect to get your desired color</p>
+        </div>
+        
+        <div class="color-comparison">
+          <!-- Target Color Card -->
+          <div class="color-card target-card">
+            <div class="card-label">What You Want</div>
+            <div class="color-preview" id="targetPreview"></div>
+            <div class="color-values">
+              <div class="value-row">
+                <span class="value-label">HEX</span>
+                <span class="value-text" id="targetHex">#FF6600</span>
+              </div>
+              <div class="value-row">
+                <span class="value-label">RGB</span>
+                <span class="value-text" id="targetRgb">255, 102, 0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arrow -->
+          <div class="arrow-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+
+          <!-- Corrected Color Card -->
+          <div class="color-card corrected-card">
+            <div class="card-label">What To Enter</div>
+            <div class="color-preview corrected-preview" id="correctedPreview">
+              <div class="led-effect"></div>
+            </div>
+            <div class="color-values">
+              <div class="value-row copyable" id="copyHex">
+                <span class="value-label">HEX</span>
+                <span class="value-text" id="correctedHex">#FF1500</span>
+                <button class="copy-btn" aria-label="Copy HEX">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="value-row copyable" id="copyRgb">
+                <span class="value-label">RGB</span>
+                <span class="value-text" id="correctedRgb">255, 21, 0</span>
+                <button class="copy-btn" aria-label="Copy RGB">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip Box -->
+        <div class="tip-box" id="tipBox">
+          <span class="tip-icon">💡</span>
+          <p class="tip-text">For orange colors, the green channel needs significant reduction. LEDs over-represent green, making orange appear yellow.</p>
+        </div>
+      </section>
+
+      <!-- Quick Presets -->
+      <section class="presets-section">
+        <div class="section-header">
+          <h2>Quick Presets</h2>
+          <p>Common colors that are tricky to get right</p>
+        </div>
+        
+        <div class="preset-buttons">
+          <button class="preset-btn" data-color="#FF6600" style="--preset-color: #FF6600">
+            <span class="preset-swatch"></span>
+            <span>Orange</span>
+          </button>
+          <button class="preset-btn" data-color="#800080" style="--preset-color: #800080">
+            <span class="preset-swatch"></span>
+            <span>Purple</span>
+          </button>
+          <button class="preset-btn" data-color="#00CED1" style="--preset-color: #00CED1">
+            <span class="preset-swatch"></span>
+            <span>Teal</span>
+          </button>
+          <button class="preset-btn" data-color="#FFD700" style="--preset-color: #FFD700">
+            <span class="preset-swatch"></span>
+            <span>Gold</span>
+          </button>
+          <button class="preset-btn" data-color="#FF1493" style="--preset-color: #FF1493">
+            <span class="preset-swatch"></span>
+            <span>Pink</span>
+          </button>
+          <button class="preset-btn" data-color="#00FF00" style="--preset-color: #00FF00">
+            <span class="preset-swatch"></span>
+            <span>Lime</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Built to solve the LED color mismatch problem. <a href="https://reddit.com/r/lianli" target="_blank">Inspired by the community</a></p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✓</span>
+    <span class="toast-text">Copied to clipboard!</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
