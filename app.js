@@ -6,17 +6,15 @@
 // ===== Device Profiles =====
 // Each device has different LED characteristics and needs different corrections
 const DEVICE_PROFILES = {
+  // ===== Lian Li =====
   'tl-fans': {
     name: 'Lian Li TL Fans',
-    // Green reduction factor for warm colors (0-1)
+    brand: 'lianli',
+    software: 'L-Connect',
     greenReduction: 0.85,
-    // Hue shift in degrees (negative = shift toward red)
     hueShift: -8,
-    // Saturation boost multiplier
     saturationBoost: 1.15,
-    // Blue reduction for warm colors
     blueReduction: 0.7,
-    // Special correction for problematic hue ranges
     hueCorrections: [
       { range: [15, 45], greenMultiplier: 0.08, hueShift: -10 },  // Orange
       { range: [45, 65], greenMultiplier: 0.15, hueShift: -5 },   // Yellow
@@ -26,28 +24,175 @@ const DEVICE_PROFILES = {
   },
   'strimer': {
     name: 'Lian Li Strimer',
+    brand: 'lianli',
+    software: 'L-Connect',
     greenReduction: 0.80,
     hueShift: -10,
     saturationBoost: 1.2,
     blueReduction: 0.65,
+    brightnessRecommendation: 40, // Recommended brightness %
     hueCorrections: [
-      { range: [15, 45], greenMultiplier: 0.10, hueShift: -12 },  // Orange - more correction needed
-      { range: [45, 65], greenMultiplier: 0.18, hueShift: -6 },   // Yellow
-      { range: [270, 300], blueMultiplier: 0.82, hueShift: 6 },   // Purple
-      { range: [170, 200], greenMultiplier: 0.88, hueShift: 4 },  // Teal/Cyan
+      { range: [15, 45], greenMultiplier: 0.10, hueShift: -12 },
+      { range: [45, 65], greenMultiplier: 0.18, hueShift: -6 },
+      { range: [270, 300], blueMultiplier: 0.82, hueShift: 6 },
+      { range: [170, 200], greenMultiplier: 0.88, hueShift: 4 },
     ]
   },
   'sl-fans': {
     name: 'Lian Li SL Fans',
+    brand: 'lianli',
+    software: 'L-Connect',
     greenReduction: 0.88,
     hueShift: -6,
     saturationBoost: 1.1,
     blueReduction: 0.75,
     hueCorrections: [
-      { range: [15, 45], greenMultiplier: 0.12, hueShift: -8 },   // Orange
-      { range: [45, 65], greenMultiplier: 0.20, hueShift: -4 },   // Yellow
-      { range: [270, 300], blueMultiplier: 0.88, hueShift: 4 },   // Purple
-      { range: [170, 200], greenMultiplier: 0.92, hueShift: 2 },  // Teal/Cyan
+      { range: [15, 45], greenMultiplier: 0.12, hueShift: -8 },
+      { range: [45, 65], greenMultiplier: 0.20, hueShift: -4 },
+      { range: [270, 300], blueMultiplier: 0.88, hueShift: 4 },
+      { range: [170, 200], greenMultiplier: 0.92, hueShift: 2 },
+    ]
+  },
+
+  // ===== Corsair =====
+  'corsair-ql': {
+    name: 'Corsair QL Fans',
+    brand: 'corsair',
+    software: 'iCUE',
+    greenReduction: 0.73, // QL fans need more green reduction for orange
+    hueShift: -12,
+    saturationBoost: 1.2,
+    blueReduction: 0.7,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.09, hueShift: -15 },  // Orange - R255 G24 B0 works
+      { range: [45, 65], greenMultiplier: 0.12, hueShift: -8 },
+      { range: [270, 300], blueMultiplier: 0.80, hueShift: 8 },
+      { range: [170, 200], greenMultiplier: 0.85, hueShift: 5 },
+    ]
+  },
+  'corsair-ll': {
+    name: 'Corsair LL Fans',
+    brand: 'corsair',
+    software: 'iCUE',
+    greenReduction: 0.78,
+    hueShift: -10,
+    saturationBoost: 1.15,
+    blueReduction: 0.72,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.10, hueShift: -12 },
+      { range: [45, 65], greenMultiplier: 0.15, hueShift: -6 },
+      { range: [270, 300], blueMultiplier: 0.82, hueShift: 6 },
+      { range: [170, 200], greenMultiplier: 0.88, hueShift: 4 },
+    ]
+  },
+  'corsair-sp': {
+    name: 'Corsair SP/ML Fans',
+    brand: 'corsair',
+    software: 'iCUE',
+    greenReduction: 0.80,
+    hueShift: -8,
+    saturationBoost: 1.1,
+    blueReduction: 0.75,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.27, hueShift: -10 },  // Based on #FF4500 suggestion
+      { range: [45, 65], greenMultiplier: 0.18, hueShift: -5 },
+      { range: [270, 300], blueMultiplier: 0.85, hueShift: 5 },
+      { range: [170, 200], greenMultiplier: 0.90, hueShift: 3 },
+    ]
+  },
+
+  // ===== NZXT =====
+  'nzxt-aer': {
+    name: 'NZXT Aer RGB',
+    brand: 'nzxt',
+    software: 'CAM',
+    greenReduction: 0.82,
+    hueShift: -8,
+    saturationBoost: 1.15,
+    blueReduction: 0.70,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.05, hueShift: -12 },  // Yellow→orange issue
+      { range: [45, 65], greenMultiplier: 0.10, hueShift: -8 },
+      { range: [270, 300], blueMultiplier: 0.80, hueShift: 8 },
+      { range: [170, 200], greenMultiplier: 0.85, hueShift: 5 },
+    ]
+  },
+  'nzxt-kraken': {
+    name: 'NZXT Kraken',
+    brand: 'nzxt',
+    software: 'CAM',
+    greenReduction: 0.80,
+    hueShift: -10,
+    saturationBoost: 1.2,
+    blueReduction: 0.68,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.02, hueShift: -15 },  // Red appears orange issue
+      { range: [45, 65], greenMultiplier: 0.08, hueShift: -10 },
+      { range: [270, 300], blueMultiplier: 0.78, hueShift: 10 },
+      { range: [170, 200], greenMultiplier: 0.82, hueShift: 6 },
+    ]
+  },
+  'nzxt-hue': {
+    name: 'NZXT Hue 2',
+    brand: 'nzxt',
+    software: 'CAM',
+    greenReduction: 0.85,
+    hueShift: -6,
+    saturationBoost: 1.1,
+    blueReduction: 0.75,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.08, hueShift: -10 },
+      { range: [45, 65], greenMultiplier: 0.12, hueShift: -6 },
+      { range: [270, 300], blueMultiplier: 0.85, hueShift: 5 },
+      { range: [170, 200], greenMultiplier: 0.88, hueShift: 4 },
+    ]
+  },
+
+  // ===== Cooler Master =====
+  'cm-masterfan': {
+    name: 'CM MasterFan',
+    brand: 'coolermaster',
+    software: 'MasterPlus+',
+    greenReduction: 0.85,
+    hueShift: -5,
+    saturationBoost: 1.1,
+    blueReduction: 0.78,
+    // CM has orange tint on white issue - need to reduce red for whites
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.15, hueShift: -8 },
+      { range: [45, 65], greenMultiplier: 0.20, hueShift: -4 },
+      { range: [270, 300], blueMultiplier: 0.88, hueShift: 4 },
+      { range: [170, 200], greenMultiplier: 0.90, hueShift: 2 },
+    ]
+  },
+  'cm-sickleflow': {
+    name: 'CM SickleFlow',
+    brand: 'coolermaster',
+    software: 'MasterPlus+',
+    greenReduction: 0.82,
+    hueShift: -7,
+    saturationBoost: 1.15,
+    blueReduction: 0.75,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.12, hueShift: -10 },
+      { range: [45, 65], greenMultiplier: 0.18, hueShift: -5 },
+      { range: [270, 300], blueMultiplier: 0.85, hueShift: 5 },
+      { range: [170, 200], greenMultiplier: 0.88, hueShift: 3 },
+    ]
+  },
+  'cm-halos': {
+    name: 'CM MasterFan Halo',
+    brand: 'coolermaster',
+    software: 'MasterPlus+',
+    greenReduction: 0.80,
+    hueShift: -8,
+    saturationBoost: 1.2,
+    blueReduction: 0.72,
+    hueCorrections: [
+      { range: [15, 45], greenMultiplier: 0.10, hueShift: -12 },
+      { range: [45, 65], greenMultiplier: 0.15, hueShift: -6 },
+      { range: [270, 300], blueMultiplier: 0.82, hueShift: 6 },
+      { range: [170, 200], greenMultiplier: 0.85, hueShift: 4 },
     ]
   }
 };
@@ -62,11 +207,13 @@ const COLOR_TIPS = {
   green: 'Green LEDs are naturally bright. Consider if you want the full intensity.',
   blue: 'Blue typically displays well on LEDs with minimal correction needed.',
   pink: 'Pink requires careful balancing of red and blue to avoid appearing too magenta.',
-  default: 'Use the corrected values in your L-Connect software to achieve the desired color.'
+  default: 'Use the corrected values in your control software to achieve the desired color.'
 };
 
 // ===== State =====
 let currentDevice = 'tl-fans';
+let currentBrand = 'lianli';
+let currentBrightness = 100;
 let currentColor = { r: 255, g: 102, b: 0 }; // Default orange
 
 // ===== DOM Elements =====
@@ -84,12 +231,18 @@ const elements = {
   correctedHex: document.getElementById('correctedHex'),
   correctedRgb: document.getElementById('correctedRgb'),
   deviceButtons: document.querySelectorAll('.device-btn'),
+  brandTabs: document.querySelectorAll('.brand-tab'),
   presetButtons: document.querySelectorAll('.preset-btn'),
   copyHex: document.getElementById('copyHex'),
   copyRgb: document.getElementById('copyRgb'),
   toast: document.getElementById('toast'),
   tipBox: document.getElementById('tipBox'),
-  tipText: document.querySelector('.tip-text')
+  tipText: document.querySelector('.tip-text'),
+  softwareHint: document.getElementById('softwareHint'),
+  brightnessSection: document.getElementById('brightnessSection'),
+  brightnessSlider: document.getElementById('brightnessSlider'),
+  brightnessValue: document.getElementById('brightnessValue'),
+  brightnessTip: document.getElementById('brightnessTip')
 };
 
 // ===== Color Utility Functions =====
@@ -148,17 +301,17 @@ function hslToRgb(h, s, l) {
     const hue2rgb = (p, q, t) => {
       if (t < 0) t += 1;
       if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     };
 
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1/3);
+    r = hue2rgb(p, q, h + 1 / 3);
     g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
+    b = hue2rgb(p, q, h - 1 / 3);
   }
 
   return {
@@ -221,13 +374,13 @@ function getColorCategory(hue) {
 function correctColor(rgb, deviceProfile) {
   const profile = DEVICE_PROFILES[deviceProfile];
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-  
+
   let correctedR = rgb.r;
   let correctedG = rgb.g;
   let correctedB = rgb.b;
   let correctedHue = hsl.h;
   let correctedSat = hsl.s;
-  
+
   // Find if this hue falls into a special correction range
   let specialCorrection = null;
   for (const correction of profile.hueCorrections) {
@@ -237,7 +390,7 @@ function correctColor(rgb, deviceProfile) {
       break;
     }
   }
-  
+
   // Apply corrections based on color type
   if (specialCorrection) {
     // Apply special corrections for problematic colors
@@ -258,7 +411,7 @@ function correctColor(rgb, deviceProfile) {
       correctedG = Math.round(rgb.g * (1 - greenReductionAmount));
       correctedHue = Math.max(0, hsl.h + (profile.hueShift * warmFactor));
     }
-    
+
     // For cool colors with blue, apply blue reduction if needed
     if (hsl.h >= 200 && hsl.h <= 340) {
       const coolFactor = 1 - Math.abs((hsl.h - 270) / 70);
@@ -266,10 +419,10 @@ function correctColor(rgb, deviceProfile) {
       correctedB = Math.round(rgb.b * (1 - blueReductionAmount * 0.3));
     }
   }
-  
+
   // Boost saturation for richer colors
   correctedSat = Math.min(100, hsl.s * profile.saturationBoost);
-  
+
   // If we modified the hue or saturation significantly, recalculate RGB from HSL
   if (Math.abs(correctedHue - hsl.h) > 2 || Math.abs(correctedSat - hsl.s) > 5) {
     const newRgb = hslToRgb(correctedHue, correctedSat, hsl.l);
@@ -278,7 +431,7 @@ function correctColor(rgb, deviceProfile) {
     correctedG = Math.round((correctedG + newRgb.g) / 2);
     correctedB = Math.round((correctedB + newRgb.b) / 2);
   }
-  
+
   // Ensure values are in valid range
   return {
     r: Math.max(0, Math.min(255, correctedR)),
@@ -295,7 +448,8 @@ function correctColor(rgb, deviceProfile) {
 function updateUI() {
   const hex = rgbToHex(currentColor.r, currentColor.g, currentColor.b);
   const hsl = rgbToHsl(currentColor.r, currentColor.g, currentColor.b);
-  
+  const profile = DEVICE_PROFILES[currentDevice];
+
   // Update input elements
   elements.colorPicker.value = hex;
   elements.colorPickerOverlay.style.backgroundColor = hex;
@@ -303,20 +457,42 @@ function updateUI() {
   elements.rInput.value = currentColor.r;
   elements.gInput.value = currentColor.g;
   elements.bInput.value = currentColor.b;
-  
+
   // Update target preview
   elements.targetPreview.style.backgroundColor = hex;
   elements.targetHex.textContent = hex;
   elements.targetRgb.textContent = `${currentColor.r}, ${currentColor.g}, ${currentColor.b}`;
-  
-  // Calculate and display corrected color
+
+  // Calculate and display corrected color (apply brightness)
   const corrected = correctColor(currentColor, currentDevice);
-  const correctedHex = rgbToHex(corrected.r, corrected.g, corrected.b);
-  
+
+  // Apply brightness adjustment
+  const brightnessFactor = currentBrightness / 100;
+  const adjustedCorrected = {
+    r: Math.round(corrected.r * brightnessFactor),
+    g: Math.round(corrected.g * brightnessFactor),
+    b: Math.round(corrected.b * brightnessFactor)
+  };
+
+  const correctedHex = rgbToHex(adjustedCorrected.r, adjustedCorrected.g, adjustedCorrected.b);
+
   elements.correctedPreview.style.backgroundColor = correctedHex;
   elements.correctedHex.textContent = correctedHex;
-  elements.correctedRgb.textContent = `${corrected.r}, ${corrected.g}, ${corrected.b}`;
-  
+  elements.correctedRgb.textContent = `${adjustedCorrected.r}, ${adjustedCorrected.g}, ${adjustedCorrected.b}`;
+
+  // Update software hint based on device
+  if (profile && profile.software) {
+    elements.softwareHint.textContent = `Enter this value in ${profile.software} to get your desired color`;
+  }
+
+  // Update brightness tip based on device
+  if (profile && profile.brightnessRecommendation) {
+    elements.brightnessTip.textContent = `💡 For ${profile.name}, reducing brightness to ~${profile.brightnessRecommendation}% often improves color accuracy`;
+    elements.brightnessTip.style.display = 'block';
+  } else {
+    elements.brightnessTip.textContent = '💡 Adjusting brightness can help with color accuracy on some devices';
+  }
+
   // Update tip based on color
   const category = getColorCategory(hsl.h);
   elements.tipText.textContent = COLOR_TIPS[category] || COLOR_TIPS.default;
@@ -328,7 +504,7 @@ function updateUI() {
 function showToast(message = 'Copied to clipboard!') {
   elements.toast.querySelector('.toast-text').textContent = message;
   elements.toast.classList.add('show');
-  
+
   setTimeout(() => {
     elements.toast.classList.remove('show');
   }, 2000);
@@ -370,7 +546,7 @@ elements.hexInput.addEventListener('input', (e) => {
   if (!value.startsWith('#')) {
     value = '#' + value;
   }
-  
+
   if (isValidHex(value)) {
     const rgb = hexToRgb(value);
     if (rgb) {
@@ -396,14 +572,56 @@ elements.hexInput.addEventListener('blur', (e) => {
   });
 });
 
+// Brand tab selection
+elements.brandTabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const brand = tab.dataset.brand;
+
+    // Update active tab
+    elements.brandTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    // Show/hide device buttons based on brand
+    elements.deviceButtons.forEach(btn => {
+      if (btn.dataset.brand === brand) {
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.add('hidden');
+      }
+    });
+
+    // Select first device of this brand
+    const firstDevice = document.querySelector(`.device-btn[data-brand="${brand}"]`);
+    if (firstDevice) {
+      elements.deviceButtons.forEach(b => b.classList.remove('active'));
+      firstDevice.classList.add('active');
+      currentDevice = firstDevice.dataset.device;
+      currentBrand = brand;
+    }
+
+    updateUI();
+  });
+});
+
 // Device selection
 elements.deviceButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
+    // Only allow clicking visible buttons
+    if (btn.classList.contains('hidden')) return;
+
     elements.deviceButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentDevice = btn.dataset.device;
+    currentBrand = btn.dataset.brand;
     updateUI();
   });
+});
+
+// Brightness slider
+elements.brightnessSlider.addEventListener('input', (e) => {
+  currentBrightness = parseInt(e.target.value);
+  elements.brightnessValue.textContent = `${currentBrightness}%`;
+  updateUI();
 });
 
 // Preset buttons

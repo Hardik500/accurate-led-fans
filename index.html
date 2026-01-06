@@ -65,22 +65,92 @@
           <p>Different devices need different corrections</p>
         </div>
         
+        <!-- Brand Tabs -->
+        <div class="brand-tabs">
+          <button class="brand-tab active" data-brand="lianli">Lian Li</button>
+          <button class="brand-tab" data-brand="corsair">Corsair</button>
+          <button class="brand-tab" data-brand="nzxt">NZXT</button>
+          <button class="brand-tab" data-brand="coolermaster">Cooler Master</button>
+        </div>
+        
         <div class="device-buttons">
-          <button class="device-btn active" data-device="tl-fans">
+          <!-- Lian Li Devices -->
+          <button class="device-btn active" data-device="tl-fans" data-brand="lianli">
             <span class="device-icon">🌀</span>
-            <span class="device-name">Lian Li TL Fans</span>
+            <span class="device-name">TL Fans</span>
             <span class="device-desc">UNI FAN TL series</span>
           </button>
-          <button class="device-btn" data-device="strimer">
+          <button class="device-btn" data-device="strimer" data-brand="lianli">
             <span class="device-icon">⚡</span>
-            <span class="device-name">Lian Li Strimer</span>
+            <span class="device-name">Strimer</span>
             <span class="device-desc">Strimer Plus cables</span>
           </button>
-          <button class="device-btn" data-device="sl-fans">
+          <button class="device-btn" data-device="sl-fans" data-brand="lianli">
             <span class="device-icon">💨</span>
-            <span class="device-name">Lian Li SL Fans</span>
+            <span class="device-name">SL Fans</span>
             <span class="device-desc">UNI FAN SL series</span>
           </button>
+          
+          <!-- Corsair Devices -->
+          <button class="device-btn hidden" data-device="corsair-ql" data-brand="corsair">
+            <span class="device-icon">🌀</span>
+            <span class="device-name">QL Fans</span>
+            <span class="device-desc">QL RGB series</span>
+          </button>
+          <button class="device-btn hidden" data-device="corsair-ll" data-brand="corsair">
+            <span class="device-icon">💫</span>
+            <span class="device-name">LL Fans</span>
+            <span class="device-desc">LL RGB series</span>
+          </button>
+          <button class="device-btn hidden" data-device="corsair-sp" data-brand="corsair">
+            <span class="device-icon">🔄</span>
+            <span class="device-name">SP/ML Fans</span>
+            <span class="device-desc">SP/ML Elite series</span>
+          </button>
+          
+          <!-- NZXT Devices -->
+          <button class="device-btn hidden" data-device="nzxt-aer" data-brand="nzxt">
+            <span class="device-icon">🌀</span>
+            <span class="device-name">Aer RGB</span>
+            <span class="device-desc">Aer RGB 2 fans</span>
+          </button>
+          <button class="device-btn hidden" data-device="nzxt-kraken" data-brand="nzxt">
+            <span class="device-icon">🐙</span>
+            <span class="device-name">Kraken</span>
+            <span class="device-desc">Kraken AIO coolers</span>
+          </button>
+          <button class="device-btn hidden" data-device="nzxt-hue" data-brand="nzxt">
+            <span class="device-icon">💡</span>
+            <span class="device-name">Hue 2</span>
+            <span class="device-desc">LED strips</span>
+          </button>
+          
+          <!-- Cooler Master Devices -->
+          <button class="device-btn hidden" data-device="cm-masterfan" data-brand="coolermaster">
+            <span class="device-icon">🌀</span>
+            <span class="device-name">MasterFan</span>
+            <span class="device-desc">MasterFan ARGB</span>
+          </button>
+          <button class="device-btn hidden" data-device="cm-sickleflow" data-brand="coolermaster">
+            <span class="device-icon">💨</span>
+            <span class="device-name">SickleFlow</span>
+            <span class="device-desc">SickleFlow ARGB</span>
+          </button>
+          <button class="device-btn hidden" data-device="cm-halos" data-brand="coolermaster">
+            <span class="device-icon">⭕</span>
+            <span class="device-name">MasterFan Halo</span>
+            <span class="device-desc">Halo ARGB ring</span>
+          </button>
+        </div>
+        
+        <!-- Brightness Slider (for Strimer and other devices) -->
+        <div class="brightness-section" id="brightnessSection">
+          <div class="brightness-header">
+            <label for="brightnessSlider">LED Brightness</label>
+            <span class="brightness-value" id="brightnessValue">100%</span>
+          </div>
+          <input type="range" id="brightnessSlider" min="10" max="100" value="100" class="brightness-slider">
+          <p class="brightness-tip" id="brightnessTip">💡 For Strimers, reducing brightness to ~40% often improves color accuracy</p>
         </div>
       </section>
 
@@ -88,7 +158,7 @@
       <section class="results-section">
         <div class="section-header">
           <h2>3. Use This Corrected Color</h2>
-          <p>Enter this value in L-Connect to get your desired color</p>
+          <p id="softwareHint">Enter this value in L-Connect to get your desired color</p>
         </div>
         
         <div class="color-comparison">
